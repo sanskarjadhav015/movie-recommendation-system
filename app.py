@@ -13,7 +13,17 @@ st.set_page_config(
 
 # ---------------- LOAD DATA ----------------
 df = pd.read_csv("clustered_df.csv")
-overview_tfidf = pickle.load(open("overview_tfidf.pkl", "rb"))
+import os
+import pickle
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "overview_tfidf.pkl")
+
+if not os.path.exists(MODEL_PATH):
+    st.error("Model file overview_tfidf.pkl NOT found on server.")
+    st.stop()
+
+overview_tfidf = pickle.load(open(MODEL_PATH, "rb"))
 
 # ---------------- RECOMMENDATION FUNCTION ----------------
 def recommend_movies(title, df, num_recommendations=6):
